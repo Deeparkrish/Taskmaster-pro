@@ -45,10 +45,60 @@ var saveTasks = function() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
+// when the task text is clicked 
+$(".list-group").on("click", "p", function() {
+    // asssign the edited text to a var 
+    var text = $(this).text().trim();
+    console.log(text);
+
+    //Create a text area 
+    var textInput = $("<textarea>")
+    //set the edited text 
+    .addClass("form-control")
+    .val(text);
+    // replace p element with text area 
+    $(this).replaceWith(textInput);
+    //focus on the added element 
+    textInput.trigger("focus");
+});
+
+// when the text area was not focused 
+$(".list-group").on("blur", "textarea", function() {
+    // get the textarea's current value/text
+    var text = $(this).val().trim();
+    // get the status type
+    var status = $(this)
+      //returns the first ancestor-first grandparent 
+      .closest(".list-group")
+      //$(selector).attr(attribute) -returns the value of an attribute
+      .attr("id")
+      //replace (searchstring, newstring)
+      .replace("list-", "");
+      // get the index 
+      var index = $(this)
+      .closest(".list-group-item")
+      // search for status 
+      .index();
+
+      //update/save the task text value to the corresponding index of the corresponsing status array
+      tasks[status][index].text = text;
+      //save to local storage 
+      saveTasks();
+      
+      // recreate p element
+      var taskP = $("<p>")
+      .addClass("m-1")
+      .text(text);
+
+    // replace textarea with p element
+    $(this).replaceWith(taskP);
 
 
+  });
+  
 
-// modal was triggered
+
+// modal was triggereds
 $("#task-form-modal").on("show.bs.modal", function() {
   // clear values
   $("#modalTaskDescription, #modalDueDate").val("");
