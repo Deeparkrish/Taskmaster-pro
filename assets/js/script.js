@@ -65,7 +65,8 @@ $(".list-group").on("click", "p", function() {
 // when the text area was not focused 
 $(".list-group").on("blur", "textarea", function() {
     // get the textarea's current value/text
-    var text = $(this).val().trim();
+    var text = $(this)
+        .val();
     // get the status type
     var status = $(this)
       //returns the first ancestor-first grandparent 
